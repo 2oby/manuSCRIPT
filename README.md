@@ -153,9 +153,3 @@ MIT License - See LICENSE file for details
 
 For issues, questions, or feature requests, please open an issue on GitHub.
 
----
-
-<div align="center">
-  <p>Made with ❤️ for writers and authors</p>
-  <p>🤖 Generated with Claude Code</p>
-</div>
