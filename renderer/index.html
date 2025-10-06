@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>manuSCRIPT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="manuSCRIPT" class="logo">
+            <div class="subtitle">/// MANUSCRIPT COMBINER ///</div>
+        </header>
+
+        <!-- File List Section -->
+        <section class="file-section">
+            <div class="section-header">SELECTED FILES:</div>
+            <div id="fileList" class="file-list">
+                <div class="placeholder">No files selected. Click "SELECT FILES" to begin.</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button id="selectFilesBtn" class="btn btn-secondary">SELECT FILES</button>
+                <button id="clearFilesBtn" class="btn btn-secondary">CLEAR</button>
+            </div>
+        </section>
+
+        <!-- Options Section -->
+        <section class="options-section">
+            <div class="section-header">OUTPUT OPTIONS:</div>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="archiveZip" checked>
+                    <span>Archive txts in zip</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="generateEpub" checked>
+                    <span>epub</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="generatePdf" checked>
+                    <span>pdf</span>
+                </label>
+                <label class="checkbox-label" id="showDateLabel">
+                    <input type="checkbox" id="showDate">
+                    <span>Show date in each chapter</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Manuscript Details Section -->
+        <section class="details-section">
+            <div class="section-header">MANUSCRIPT DETAILS:</div>
+            <div class="input-group">
+                <label for="manuscriptTitle">Title</label>
+                <input type="text" id="manuscriptTitle" placeholder="Enter manuscript title">
+                <div id="titleError" class="input-error">Title is required</div>
+            </div>
+            <div class="input-group">
+                <label for="manuscriptAuthor">Author</label>
+                <input type="text" id="manuscriptAuthor" placeholder="Enter author name">
+                <div id="authorError" class="input-error">Author is required</div>
+            </div>
+            <div class="input-group">
+                <label for="fontFamily">Font</label>
+                <select id="fontFamily">
+                    <option value="Georgia">Georgia (Serif)</option>
+                    <option value="Arial">Arial (Sans)</option>
+                    <option value="Courier New">Courier New (Mono)</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Controls Section -->
+        <section class="controls-section">
+            <button id="settingsBtn" class="btn btn-secondary">⚙ SETTINGS</button>
+            <button id="generateBtn" class="btn btn-primary">GENERATE</button>
+        </section>
+
+        <!-- Output Location Section -->
+        <section class="output-location-section">
+            <div class="section-header">OUTPUT LOCATION:</div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div id="outputLocation" style="flex: 1; font-size: 12px; opacity: 0.8;">Desktop</div>
+                <button id="changeOutputBtn" class="btn btn-secondary">CHANGE</button>
+            </div>
+        </section>
+
+        <!-- Status Section -->
+        <section class="status-section">
+            <div id="statusMessage" class="status-message"></div>
+            <div id="progressBar" class="progress-bar" style="display: none;">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <div id="outputPath" class="output-path" style="display: none;"></div>
+        </section>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙ SETTINGS</h2>
+            </div>
+            <div class="modal-body">
+                <!-- Margins -->
+                <div class="settings-group">
+                    <div class="section-header">MARGINS (mm):</div>
+                    <div class="input-row">
+                        <label>Top</label>
+                        <input type="number" id="marginTop" value="25.4" step="0.1">
+                    </div>
+                    <div class="input-row">
+                        <label>Bottom</label>
+                        <input type="number" id="marginBottom" value="25.4" step="0.1">
+                    </div>
+                    <div class="input-row">
+                        <label>Left</label>
+                        <input type="number" id="marginLeft" value="25.4" step="0.1">
+                    </div>
+                    <div class="input-row">
+                        <label>Right</label>
+                        <input type="number" id="marginRight" value="25.4" step="0.1">
+                    </div>
+                </div>
+
+                <!-- Spacing -->
+                <div class="settings-group">
+                    <div class="section-header">SPACING:</div>
+                    <div class="radio-group">
+                        <label>Line spacing:</label>
+                        <label class="radio-label">
+                            <input type="radio" name="lineSpacing" value="1"> Single
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="lineSpacing" value="1.5" checked> 1.5
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="lineSpacing" value="2"> Double
+                        </label>
+                    </div>
+                    <div class="input-row">
+                        <label>Paragraph spacing (pt)</label>
+                        <input type="number" id="paragraphSpacing" value="12" step="1">
+                    </div>
+                </div>
+
+                <!-- Page -->
+                <div class="settings-group">
+                    <div class="section-header">PAGE:</div>
+                    <div class="radio-group">
+                        <label>Page size:</label>
+                        <label class="radio-label">
+                            <input type="radio" name="pageSize" value="A4" checked> A4
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="pageSize" value="A5"> A5
+                        </label>
+                    </div>
+                </div>
+
+                <!-- EPUB Options -->
+                <div class="settings-group">
+                    <div class="section-header">EPUB OPTIONS:</div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="epubToc" checked>
+                        <span>Auto-generate table of contents</span>
+                    </label>
+                </div>
+
+                <!-- Chapter Headers -->
+                <div class="settings-group">
+                    <div class="section-header">CHAPTER HEADERS:</div>
+                    <div class="input-row">
+                        <label>Font size (pt)</label>
+                        <input type="number" id="chapterFontSize" value="18" step="1">
+                    </div>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chapterBold" checked>
+                        <span>Bold</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chapterItalic">
+                        <span>Italic</span>
+                    </label>
+                </div>
+
+                <!-- Title Filtering -->
+                <div class="settings-group">
+                    <div class="section-header">TITLE FILTERING:</div>
+                    <div class="input-group">
+                        <label for="ignoreSeparators">Ignore these strings in titles (comma-separated)</label>
+                        <input type="text" id="ignoreSeparators" placeholder="-d-, --, -- HERE --">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="resetSettingsBtn" class="btn btn-secondary">RESET TO DEFAULTS</button>
+                <button id="cancelSettingsBtn" class="btn btn-secondary">CANCEL</button>
+                <button id="saveSettingsBtn" class="btn btn-primary">SAVE</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

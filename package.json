@@ -1,0 +1,43 @@
+{
+  "name": "manuscript-app",
+  "version": "1.0.0",
+  "description": "manuSCRIPT - A retro terminal-styled manuscript combiner",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win"
+  },
+  "keywords": ["electron", "manuscript", "pdf", "epub"],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "pdfkit": "^0.14.0",
+    "epub-gen": "^0.1.0",
+    "archiver": "^6.0.1"
+  },
+  "build": {
+    "appId": "com.manuscript.app",
+    "productName": "manuSCRIPT",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.icns",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "target": ["nsis"]
+    },
+    "files": [
+      "**/*",
+      "!**/*.md",
+      "!.DS_Store",
+      "!ICON.png"
+    ]
+  }
+}
